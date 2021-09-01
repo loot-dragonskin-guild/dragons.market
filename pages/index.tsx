@@ -53,7 +53,7 @@ const IndexPage = ({ dragons, lastUpdate }: Props) => {
           <a
             target="_blank"
             className="underline"
-            href="https://dragonguild.vercel.app"
+            href="https://dragonsguild.vercel.app"
           >
             Discord
           </a>

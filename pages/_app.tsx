@@ -31,7 +31,7 @@ function Dragons({ Component, pageProps }) {
         />
         <meta property="og:image" content="https://dragons.market/og.png" />
         <script
-          data-goatcounter="https://dragonguild.goatcounter.com/count"
+          data-goatcounter="https://dragonsguild.goatcounter.com/count"
           async
           src="//gc.zgo.at/count.js"
         ></script>
