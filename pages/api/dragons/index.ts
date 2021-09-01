@@ -12,11 +12,7 @@ const fetchDragonPage = async (ids: string[]) => {
   let url = 'https://api.opensea.io/api/v1/assets?collection=lootproject&'
   url += ids.map((id) => `token_ids=${id}`).join('&')
 
-  const res = await fetch(url, {
-    headers: {
-      'X-API-KEY': apiKey,
-    },
-  })
+  const res = await fetch(url)
   const json: OpenseaResponse = await res.json()
   return json.assets
 }
