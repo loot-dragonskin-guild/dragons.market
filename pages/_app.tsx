@@ -27,7 +27,7 @@ function Dragons({ Component, pageProps }) {
         <link rel="icon" type="image/png" href="/favicon.png" />
         <meta
           property="og:description"
-          content="See the floor price of Dragonskin from the Loot project."
+          content="See the floor price of Dragons from the Loot project."
         />
         <meta property="og:image" content="https://dragons.market/og.png" />
         <script

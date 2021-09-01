@@ -34,11 +34,11 @@ const Dragon = ({ dragon }: { dragon: DragonInfo }) => {
 const IndexPage = ({ dragons, lastUpdate }: Props) => {
   return (
     <div className="py-3 md:pb-0 font-mono flex flex-col justify-center items-center gap-4 pt-10 md:w-screen">
-      <h1 className="text-lg md:text-3xl">Dragon Guild</h1>
+      <h1 className="text-lg md:text-3xl">Dragons Guild</h1>
       <div className="text-center max-w-screen-md md:leading-loose">
         <p className="md:text-xl">
-          There are {dragons.length} bags for sale with Dragonskin. The floor
-          price is {dragons[0].price} ETH.
+          There are {dragons.length} bags for sale with Dragons. The floor price
+          is {dragons[0].price} ETH.
         </p>
         <p className="md:text-lg pt-2">
           Site by{' '}
