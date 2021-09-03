@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import pMap from 'p-map'
 import { chunk, flatten, orderBy } from 'lodash'
 import { utils as etherUtils, BigNumber } from 'ethers'
+import { rarityImage } from 'loot-rarity'
 import type { OpenseaResponse, Asset } from '../../../utils/openseaTypes'
 import DragonIDs from '../../../data/dragon-ids.json'
 
@@ -14,7 +15,18 @@ const fetchDragonPage = async (ids: string[]) => {
 
   const res = await fetch(url)
   const json: OpenseaResponse = await res.json()
-  return json.assets
+
+  return Promise.all(
+    json.assets.map(async (asset) => {
+      return {
+        ...asset,
+        image_url: await rarityImage(asset.token_metadata, {
+          colorFn: ({ itemName }) =>
+            itemName.toLowerCase().includes('divine robe') && 'cyan',
+        }),
+      }
+    }),
+  )
 }
 
 export interface DragonInfo {
@@ -27,25 +39,23 @@ export interface DragonInfo {
 export const fetchDragons = async () => {
   const data = await pMap(chunked, fetchDragonPage, { concurrency: 2 })
   const mapped = flatten(data)
-    .filter((d) => {
-      return (
-        d.sell_orders &&
-        d.sell_orders.length > 0 &&
-        d.sell_orders[0].payment_token_contract.symbol == 'ETH'
-      )
-    })
+    .filter(
+      (a: Asset) =>
+        a?.sell_orders?.[0]?.payment_token_contract.symbol === 'ETH',
+    )
     .map((a: Asset): DragonInfo => {
       return {
         id: a.token_id,
         price: Number(
           etherUtils.formatUnits(
-            BigNumber.from(a.sell_orders[0].current_price.split('.')[0]),
+            BigNumber.from(a.sell_orders[0]?.current_price.split('.')[0]),
           ),
         ),
         url: a.permalink + '?ref=0x1b541c50b42d65040fc51197f0c6277dfa96df0f',
         svg: a.image_url,
       }
     })
+
   return {
     dragons: orderBy(mapped, ['price', 'id'], ['asc', 'asc']),
     lastUpdate: new Date().toISOString(),
